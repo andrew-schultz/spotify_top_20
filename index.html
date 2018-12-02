@@ -8,6 +8,15 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
   </head>
   <body>
+    <div id="spinner">
+      <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
     <div class="login-button-container" id="login-button-container">
       <div class="login-container">
         <p class="login-title">
@@ -22,7 +31,7 @@
       </div>
     </div>
 
-    <div class="button-container list-button-container">
+    <div class="button-container list-button-container" id="list-button-container-top">
       <div class="button list-button inactive" id="artist-list-button" onclick="queryStats( 'artists' )">
         <p>Top Artists</p>
       </div>
@@ -31,7 +40,7 @@
       </div>
     </div>
 
-    <div class="button-container time-button-container">
+    <div class="button-container time-button-container" id="list-button-container-bottom">
       <div class="button time-button inactive" id="short-time-button" onclick="setTime( 'short_term' )">
         <p>Recent</p>
       </div>

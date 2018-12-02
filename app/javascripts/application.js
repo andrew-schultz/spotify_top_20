@@ -6,6 +6,7 @@ var inHeight = window.innerHeight;
 
 var token;
 var authToken;
+var refToken;
 var localPlayerInstance;
 
 var deviceId;
@@ -27,6 +28,12 @@ var trackListButton = document.getElementById( 'track-list-button' );
 var shortTermButton = document.getElementById( 'short-time-button' );
 var mediumTermButton = document.getElementById( 'medium-time-button' );
 var longTermButton = document.getElementById( 'long-time-button' );
+
+var loginBottonContainer = document.getElementById( 'login-button-container' );
+var loginButton = document.getElementById( 'loginButton' );
+
+var listButtonContainerTop = document.getElementById( 'list-button-container-top' );
+var listButtonContainerBottom = document.getElementById( 'list-button-container-bottom' );
 
 var activeList;
 var activeTime = 'medium_term';
@@ -728,6 +735,7 @@ var refreshToken = function( type ) {
       var xmlHttp = new XMLHttpRequest();
 
       xmlHttp.open( 'POST', '/refresh_token', true );
+      xmlHttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
       xmlHttp.onreadystatechange = function() {
         if ( xmlHttp.readyState == 4 && xmlHttp.status == 200 ) {
           var results = JSON.parse( xmlHttp.response );
@@ -735,7 +743,7 @@ var refreshToken = function( type ) {
           var authExpire = new Date();
           authExpire.setTime( authExpire.getTime() + ( 60 * 1000 ) );
           var expires = "expires="+ authExpire.toUTCString();
-
+          
           document.cookie = 'auth_token=' + results.access_token + ';' + expires;
           authToken = results.access_token;
 
@@ -743,11 +751,15 @@ var refreshToken = function( type ) {
         }
         else if ( xmlHttp.readyState == 4 && xmlHttp.status != 200 ) {
           console.log( 'error' );
-          resolve( refreshToken() );
+          resolve( refreshToken( type ) );
         }
       };
 
-      xmlHttp.send();
+      var data = {
+        'refresh_token': refToken
+      };
+
+      xmlHttp.send( JSON.stringify( data ) );
 
     }
     else {
@@ -880,7 +892,39 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   );
 };
 
-var initialize = function( query ) {
+var initialRender = function( ready ) {
+  if ( ready ) {
+    spinner.style.display = 'none';
+
+    loginBottonContainer.style.display = 'none';
+    loginButton.style.display = 'none';
+
+    listButtonContainerTop.style.display = 'flex';
+    listButtonContainerBottom.style.display = 'flex';
+
+    if ( refToken && !authToken ) {
+      refreshToken().then(
+        function() {
+          queryStats( 'artists' );
+        }
+      );
+    }
+    else {
+      queryStats( 'artists' );
+    }
+  }
+  else {
+    spinner.style.display = 'none';
+
+    loginBottonContainer.style.display = 'flex';
+    loginButton.style.display = 'block';
+
+    listButtonContainerTop.style.display = 'none';
+    listButtonContainerBottom.style.display = 'none';
+  }
+};
+
+var collectCookies = function() {
   existingCookie = getCookie( 'accessToken' );
   authCookie = getCookie( 'auth_token' );
   refreshCookie = getCookie( 'refresh_token' );
@@ -889,10 +933,10 @@ var initialize = function( query ) {
   mobileDevice = isMobile.any();
 
   var authExpire = new Date();
-  authExpire.setTime( authExpire.getTime() + 6400 );
+  authExpire.setTime( authExpire.getTime() + ( 60 * 1000 ) );
   var expires = "expires="+ authExpire.toUTCString();
 
-  if ( existingCookie || authCookie ) {
+  if ( existingCookie || authCookie || refreshCookie || existingRefreshCookie ) {
     if ( existingCookie ) {
       document.cookie = 'auth_token=' + existingCookie + ';' + expires;
     }
@@ -910,47 +954,42 @@ var initialize = function( query ) {
     }
 
     authToken = existingCookie || authCookie;
-    refToken = existingRefreshCookie || refreshToken;
-    document.getElementById( 'login-button-container' ).style.display = 'none';
-    document.getElementById( 'loginButton' ).style.display = 'none';
+    refToken = existingRefreshCookie || refreshCookie;
 
-    artistListButton.style.display = 'block';
-    trackListButton.style.display = 'block';
-
-    shortTermButton.style.display = 'block';
-    mediumTermButton.style.display = 'block';
-    longTermButton.style.display = 'block';
-
-    queryStats( 'artists' );
+    initialRender( true );
   }
   else {
-    artistListButton.style.display = 'none';
-    trackListButton.style.display = 'none';
-    shortTermButton.style.display = 'none';
-    mediumTermButton.style.display = 'none';
-    longTermButton.style.display = 'none';
+    // uh oh, somethings wrong
+    console.log( 'we aint got no cookies ' )
+    initialRender();
+    console.log( 'please log out and try again?' );
   }
+};
 
-  var preTerm;
-
-  if ( query && query.length > 0 ) {
-    preTerm = query;
+var initialize = function( query ) {
+  if ( token ) {
+    console.log( 'we got a token' );
+    collectCookies();
   }
+  else {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( 'POST', '/token', true ); // true for asynchronous
+    xmlHttp.onreadystatechange = function() {
+      if ( xmlHttp.readyState == 4 && xmlHttp.status == 200 ) {
+        var results = JSON.parse( xmlHttp.response );
+        token = results.access_token;
 
-  var xmlHttp = new XMLHttpRequest();
-  xmlHttp.open( 'POST', '/token', true ); // true for asynchronous
-  xmlHttp.onreadystatechange = function() {
-    if ( xmlHttp.readyState == 4 && xmlHttp.status == 200 ) {
-      var results = JSON.parse( xmlHttp.response );
-      token = results.access_token;
-
-      if ( preTerm && preTerm.length > 0 ) {
-        search( preTerm );
+        if ( refToken && !authToken ) {
+          refreshToken();
+        }
+        else {
+          collectCookies();
+        }
       }
-    }
-  };
+    };
 
-  xmlHttp.send();
+    xmlHttp.send();
+  }
 };
 
 initialize();

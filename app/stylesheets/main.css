@@ -34,7 +34,7 @@ body {
   padding-bottom: 8px;
   z-index: 23;
   position: relative;
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba( 255, 255, 255, 0.5 );
 }
 
 #head h1 {
@@ -50,7 +50,7 @@ body {
   margin-top: 100px;
   width: 400px;
   height: 400px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba( 0, 0, 0, 0.2 ), 0 6px 20px 0 rgba( 0, 0, 0, 0.19 );
 }
 
 .login-title {
@@ -64,6 +64,16 @@ body {
   font-size: 20px;
   text-align: center;
   padding: 0px 25px;
+}
+
+#spinner {
+  padding-top: 100px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-start;
 }
 
 #login-container {
@@ -86,6 +96,14 @@ body {
   padding: 3px;
   font-size: 15px;
   border: 1px solid #000000;
+}
+
+#list-button-container-top {
+  display: none;
+}
+
+#list-button-container-bottom {
+  display: none;
 }
 
 #main-container {
@@ -154,6 +172,10 @@ body {
   display: flex;
   width: 100%;
   justify-content: center;
+}
+
+#login-button-container {
+  display: none;
 }
 
 .list-button-container {
@@ -245,7 +267,7 @@ body {
   position: absolute;
   top: 45%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate( -50%, -50% );
 }
 
 .artist-stat-title {
@@ -324,7 +346,7 @@ body {
   margin-left: 25px;
   object-fit: cover;
   border-radius: 3px 0px 0px 3px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba( 0, 0, 0, 0.2 ), 0 6px 20px 0 rgba( 0, 0, 0, 0.19 );
 }
 
 .track-stat-img {
@@ -333,7 +355,7 @@ body {
   margin-top: 50px;
   margin-left: 50px;
   object-fit: cover;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: 0 4px 8px 0 rgba( 0, 0, 0, 0.2 ), 0 6px 20px 0 rgba( 0, 0, 0, 0.19 );
 }
 
 .listen-container {
@@ -371,8 +393,8 @@ body {
 .background-image-container {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
+  -webkit-transform: translateZ( 0 );
+  transform: translateZ( 0 );
   position: absolute;
   z-index: 10;
   background: #7c7c7c;
@@ -428,6 +450,47 @@ body {
   width: 100%;
   height: 100%;
   border-radius: 5px;
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 51px;
+  height: 51px;
+  margin: 6px;
+  border: 6px solid #000;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier( 0.5, 0, 0.5, 1 ) infinite;
+  border-color: #000 transparent transparent transparent;
+}
+
+.lds-ring div:nth-child( 1 ) {
+  animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child( 2 ) {
+  animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child( 3 ) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate( 0deg );
+  }
+  100% {
+    transform: rotate( 360deg );
+  }
 }
 
 @media all and ( max-width: 900px ) {

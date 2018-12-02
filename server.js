@@ -359,7 +359,7 @@ app.post( '/refresh_token', function( request, response ) {
     'https://accounts.spotify.com/api/token',
     {
       'grant_type': 'refresh_token',
-      'refresh_token': refreshToken
+      'refresh_token': request.body.refresh_token
     },
     function( results ) {
       token = results.access_token;
