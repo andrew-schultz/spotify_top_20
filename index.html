@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <link href="stylesheets/main.css" rel="stylesheet" />
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,300,100' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div class="login-button-container" id="login-button-container">
+      <div class="login-container">
+        <p class="login-title">
+          Top 20
+        </p>
+        <p class="login-subheader">
+          View your Top 20 most listened to artists and tracks
+        </p>
+        <div id="login-container">
+          <a href="/authorize" id="loginButton" class="btn btn-primary">Log in with Spotify</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-container list-button-container">
+      <div class="button list-button inactive" id="artist-list-button" onclick="queryStats( 'artists' )">
+        <p>Top Artists</p>
+      </div>
+      <div class="button list-button" id="track-list-button" onclick="queryStats( 'tracks' )">
+        <p>Top Tracks</p>
+      </div>
+    </div>
+
+    <div class="button-container time-button-container">
+      <div class="button time-button inactive" id="short-time-button" onclick="setTime( 'short_term' )">
+        <p>Recent</p>
+      </div>
+      <div class="button time-button" id="medium-time-button" onclick="setTime( 'medium_term' )">
+        <p>Mid</p>
+      </div>
+      <div class="button time-button inactive" id="long-time-button" onclick="setTime( 'long_term' )">
+        <p>Long</p>
+      </div>
+    </div>
+
+    <div id="main-container"></div>
+
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script src="javascripts/application.js"></script>
+  </body>
+</html>

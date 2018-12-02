@@ -1,0 +1,45 @@
+Future Features
+---------------
+
+Add button to `Create your personalized Top 20 Playlist`
+  - maybe only allow for tracks?
+  - would be interesting to do for artists if there was a way to query for top 3 or 5 tracks for a given artist
+
+  ** need to add `playlist-modify-public` to permission scopes on login
+
+  - creates a new playist called `Top 20`
+    - maybe append a date?
+    - could also query to see if that exists ( if possible, although it might require querying for all a users playlists, checking names to see if playlist.name === 'Top 20' but that could be too flimsy )
+
+    example POST request:
+      - url = https://api.spotify.com/v1/users/{user_id}/playlists
+      - body = { name: "Top 20" }
+      - response has playlist_id for following request
+
+  - make POST request to add 20 tracks to playlist
+    - will need to ensure tracks are added to `uris` array in order
+
+    example POST request:
+    - url = https://api.spotify.com/v1/users/{user_id}/playlists/{playlist_id}/tracks
+    - body =  {
+                "uris": [
+                  "spotify:track:4iV5W9uYEdYUVa79Axb7Rh",
+                  "spotify:track:1301WleyT98MSxVHPZCA6M"
+                ]
+              }
+    - track uri's should be saved to an array / variable upon initial query so this is ready to go / to lower request count
+
+  - create a custom image so that the playlists look real official
+
+Add option to share on social media?
+  - at least give the ability to copy the playlist link
+  - maybe give the embed code?
+  - could even have it generated and appended to page or in a modal for visual confirmation / then you can use already existing share options ( if thats a thing )
+
+this is the html for an embedded playlist widget:
+  <iframe src="https://open.spotify.com/embed?{ playlist-uri }" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+example playlist uri
+  spotify:user:121235432:playlist:1N2DAmpJNtj33gyyLYUAot
+
+  requires logged in users ID and playlist URI / ID

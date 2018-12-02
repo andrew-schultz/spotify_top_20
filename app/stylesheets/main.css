@@ -1,0 +1,507 @@
+/*body {
+	font-family: 'helvetica';
+}
+
+audio {
+	margin: 0 auto;
+	display: block;
+	margin-bottom: 20px;
+}
+
+#mainHeader {
+	text-align: center;
+}
+
+#processingContainer {
+	margin: 0 auto;
+	width: 600px;
+	height: 600px;
+	border: 2px solid;
+}*/
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Lato';
+}
+
+#head {
+  width: 250px;
+  padding-left: 25px;
+  padding-right: 10px;
+  display: inline-block;
+  /*margin-right: 5px;*/
+  padding-bottom: 8px;
+  z-index: 23;
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#head h1 {
+  margin-bottom: 0px;
+}
+
+#head p {
+  margin-top: 0px;
+  margin-bottom: 2px;
+}
+
+.login-container {
+  margin-top: 100px;
+  width: 400px;
+  height: 400px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.login-title {
+  margin-top: 100px;
+  width: 100%;
+  font-size: 30px;
+  text-align: center;
+}
+
+.login-subheader {
+  font-size: 20px;
+  text-align: center;
+  padding: 0px 25px;
+}
+
+#login-container {
+  height: 20px;
+  width: 150px;
+  padding: 10px 5px;
+  background-color: #2AB858;
+  text-align: center;
+  margin: 0 auto;
+  border-radius: 25px;
+}
+
+#loginButton {
+  text-decoration: none;
+  color: #ffffff;
+  text-align: center;
+}
+
+#search {
+  padding: 3px;
+  font-size: 15px;
+  border: 1px solid #000000;
+}
+
+#main-container {
+  margin-bottom: 30px;
+}
+
+#artist-container {
+}
+
+.main-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  align-content: flex-start;
+}
+
+.main-container h2 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.large {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+#play {
+  border: 1px solid #000000;
+  border-radius: 50%;
+  padding: 20px;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+}
+
+#topList {
+  border: 1px solid #000000;
+  border-radius: 50%;
+  padding: 20px;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+}
+
+.entry {
+  flex-grow: 1;
+  flex-basis: auto;
+  min-width: 200px;
+  text-align: center;
+}
+
+.artist {
+
+}
+
+/*#visualizer-container {
+  width: 700px;
+  height: 350px;
+  border: 1px solid #000000;
+  margin: 0 auto;
+}*/
+
+.login-button-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.list-button-container {
+  margin-top: 50px;
+}
+
+.time-button-container {
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.button-container {
+  width: 100%;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+}
+
+.button {
+  border-radius: 50%;
+  background: radial-gradient( rgba( 0, 0, 0, 1 ), rgba( 0, 0, 0, 0.8 ) );
+  float: left;
+  margin: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.3;
+}
+
+.list-button {
+  width: 100px;
+  height: 100px;
+}
+
+.list-button p {
+  margin-top: 18px;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.time-button {
+  width: 75px;
+  height: 75px;
+}
+
+.time-button p {
+  margin-top: 26px;
+  font-size: 18px;
+  color: #ffffff;
+}
+
+.active {
+  opacity: 0.5;
+}
+
+.inactive {
+  opacity: 0.5;
+}
+
+.ranking-container {
+  height: 50px;
+  margin-top: 10px;
+}
+
+.ranking-div {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: #000000;
+  color: #ffffff;
+  float: right;
+  margin: 5px;
+}
+
+.ranking-text {
+  font-size: 30px;
+  margin-top: 6px;
+  text-align: center;
+}
+
+.info-div {
+  position: relative;
+}
+
+.sub-info-container {
+  margin: 0;
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.artist-stat-title {
+  text-align: center;
+  color: #ffffff;
+  font-weight: 300;
+  font-size: 40px;
+  /*text-shadow: 1px 1px #2c2d2d;*/
+}
+
+.artist-stat-title-small {
+  text-align: center;
+  color: #ffffff;
+  font-weight: 300;
+  font-size: 30px;
+  margin-bottom: 0px;
+  /*text-shadow: 1px 1px #2c2d2d;*/
+}
+
+.track-artist-title {
+  text-align: center;
+  color: #ffffff;
+  padding: 10px;
+  /*background-color: #ffffff;*/
+}
+
+.track-artist-title-small {
+  text-align: center;
+  color: #ffffff;
+}
+
+.artist-stat-div {
+  position: relative;
+  height: 400px;
+  width: 800px;
+  opacity: 0px;
+  /*border: 2px solid #000000;*/
+  border-radius: 5px;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+.artist-stat-info-div {
+  height: 400px;
+  width: 350px;
+  padding-right: 10px;
+  position: relative;
+  float: right;
+  border-radius: 5px;
+  z-index: 20;
+}
+
+.track-stat-info-div {
+  height: 400px;
+  width: 425px;
+  padding-right: 10px;
+  position: relative;
+  float: right;
+  border-radius: 5px;
+  z-index: 20;
+}
+
+.artist-stat-img-div {
+  height: 400px;
+  /*max-width: 500px;*/
+  position: relative;
+  float: left;
+  border-radius: 5px;
+  z-index: 20;
+}
+
+.artist-stat-img {
+  height: 300px;
+  width: 400px;
+  margin-top: 50px;
+  margin-left: 25px;
+  object-fit: cover;
+  border-radius: 3px 0px 0px 3px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.track-stat-img {
+  height: 300px !important;
+  width: 300px;
+  margin-top: 50px;
+  margin-left: 50px;
+  object-fit: cover;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.listen-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 20;
+}
+
+.listen-button {
+  background-color: #000000;
+  padding: 10px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.listen-text {
+  text-align: center;
+  color: #ffffff;
+  margin: 0px;
+}
+
+.playing {
+
+}
+
+.pause {
+
+}
+
+.sub-container {
+  position: relative;
+}
+
+.background-image-container {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  position: absolute;
+  z-index: 10;
+  background: #7c7c7c;
+  width: 100%;
+  height: 100%;
+}
+
+.shell-background {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ( 0 );
+  -webkit-transform: translateZ( 0 );
+  position: absolute;
+  z-index: 10;
+  /*background: #7c7c7c;*/
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.shell-background-image-container {
+  left: 0;
+  height: 100%;
+  /*overflow:  hidden;*/
+  border-radius: 5px;
+}
+
+.shell-background-image-container img {
+  margin: 0 auto;
+  width: 900px;
+  height: 100%;
+  position: relative;
+  display: block;
+  border-radius: 5px;
+  overflow-y: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ( 0 );
+  transform: translateZ( 0 );
+  -webkit-filter: blur(65px);
+  -moz-filter: blur(65px);
+  -o-filter: blur(65px);
+  -ms-filter: blur(65px);
+  filter: blur(65px);
+}
+
+.shell-shadow {
+  z-index: 15;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba( 0, 0, 0, 0.4 );
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+}
+
+@media all and ( max-width: 900px ) {
+  .artist-stat-div {
+    width: 90%;
+    height: auto;
+  }
+
+  .artist-stat-img-div {
+    height: auto;
+    width: auto;
+    text-align: center;
+    float: none;
+  }
+
+  .artist-stat-img-div img {
+    margin-left: 0px;
+    margin-top: 25px;
+    width: 300px;
+    height: 200px;
+  }
+
+  .artist-stat-info-div {
+    height: auto;
+    width: auto;
+    padding: 5px;
+    float: none;
+    padding-bottom: 20px;
+  }
+
+  .sub-info-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+  }
+
+  .artist-stat-title {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  .artist-stat-title-small {
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+
+  .track-stat-info-div {
+    height: auto;
+    width: auto;
+    padding: 5px;
+    float: none;
+    padding-bottom: 20px;
+  }
+
+  .track-artist-title {
+    padding: 0px;
+  }
+
+  .ranking-container {
+    position: absolute;
+    margin-top: -230px;
+    right: 0px;
+  }
+
+  .ranking-track {
+    margin-top: -333px;
+  }
+
+  .ranking-div {
+    box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.3), 0 2px 5px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .shell-background-image-container img {
+    width: 100%;
+  }
+}
