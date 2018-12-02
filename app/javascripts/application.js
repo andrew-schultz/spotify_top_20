@@ -735,7 +735,7 @@ var refreshToken = function( type ) {
           var authExpire = new Date();
           authExpire.setTime( authExpire.getTime() + ( 60 * 1000 ) );
           var expires = "expires="+ authExpire.toUTCString();
-          
+
           document.cookie = 'auth_token=' + results.access_token + ';' + expires;
           authToken = results.access_token;
 
@@ -887,9 +887,9 @@ var initialize = function( query ) {
   existingRefreshCookie = getCookie( 'refreshToken' );
 
   mobileDevice = isMobile.any();
-debugger
+
   var authExpire = new Date();
-  authExpire.setTime( authExpire.getTime() + ( 60 * 1000 ) );
+  authExpire.setTime( authExpire.getTime() + 6400 );
   var expires = "expires="+ authExpire.toUTCString();
 
   if ( existingCookie || authCookie ) {
