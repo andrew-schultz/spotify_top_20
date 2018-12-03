@@ -123,49 +123,49 @@ var isMobile = {
 
 var getAverageRGB = function( imgEl ) {
 
-    var blockSize = 5, // only visit every 5 pixels
-        defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
-        canvas = document.createElement( 'canvas' ),
-        context = canvas.getContext && canvas.getContext( '2d' ),
-        data, width, height,
-        i = -4,
-        length,
-        rgb = { r:0, g:0, b:0 },
-        count = 0;
+  var blockSize = 5, // only visit every 5 pixels
+      defaultRGB = { r: 0, g: 0, b: 0 }, // for non-supporting envs
+      canvas = document.createElement( 'canvas' ),
+      context = canvas.getContext && canvas.getContext( '2d' ),
+      data, width, height,
+      i = -4,
+      length,
+      rgb = { r:0, g:0, b:0 },
+      count = 0;
 
-    if ( !context ) {
-      return defaultRGB;
-    }
+  if ( !context ) {
+    return defaultRGB;
+  }
 
-    height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height || 300;
-    width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width || 300;
+  height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height || 300;
+  width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width || 300;
 
-    context.drawImage( imgEl, 0, 0 );
+  context.drawImage( imgEl, 0, 0 );
 
-    try {
-        data = context.getImageData( 0, 0, width, height );
-    }
-    catch( e ) {
-        /* security error, img on diff domain */
-        // alert('x');
-      return defaultRGB;
-    }
+  try {
+      data = context.getImageData( 0, 0, width, height );
+  }
+  catch( e ) {
+      /* security error, img on diff domain */
+      // alert('x');
+    return defaultRGB;
+  }
 
-    length = data.data.length;
+  length = data.data.length;
 
-    while ( ( i += blockSize * 4 ) < length ) {
-        ++count;
-        rgb.r += data.data[ i ];
-        rgb.g += data.data[ i + 1 ];
-        rgb.b += data.data[ i + 2 ];
-    }
+  while ( ( i += blockSize * 4 ) < length ) {
+    ++count;
+    rgb.r += data.data[ i ];
+    rgb.g += data.data[ i + 1 ];
+    rgb.b += data.data[ i + 2 ];
+  }
 
-    // ~~ used to floor values
-    rgb.r = ~~( rgb.r/count );
-    rgb.g = ~~( rgb.g/count );
-    rgb.b = ~~( rgb.b/count );
+  // ~~ used to floor values
+  rgb.r = ~~( rgb.r/count );
+  rgb.g = ~~( rgb.g/count );
+  rgb.b = ~~( rgb.b/count );
 
-    return rgb;
+  return rgb;
 
 // // Found a great workaround for cross-origin restrictions:
 // // just add img.crossOrigin = ''; before setting the src attribute.
@@ -638,20 +638,52 @@ var buildNewPlaylist = function() {
   );
 };
 
+var closePlaylistPrompt = function () {
+  var body = document.getElementsByTagName( 'body' )[0];
+  var generalContainer = document.getElementById( 'general-container' );
+  var promptContainer = document.getElementById( 'playlist-prompt-container' );
+
+  generalContainer.removeChild( promptContainer );
+  body.style.overflow = 'auto';
+};
+
 var buildNewPlaylistPrompt = function() {
   var generalContainer = document.getElementById( 'general-container' );
   var playlistPromptContainer = document.createElement( 'div' );
   var body = document.getElementsByTagName( 'body' )[0];
 
   playlistPromptContainer.classList.add( 'playlist-prompt-container' );
+  playlistPromptContainer.id = 'playlist-prompt-container';
 
   var playlistPromptDiv = document.createElement( 'div' );
   playlistPromptDiv.classList.add( 'playlist-prompt-div' );
   playlistPromptContainer.appendChild( playlistPromptDiv );
 
   var playlistPromptText = document.createElement( 'p' );
-  playlistPromptText.textContent = 'Create a playlist of your Top 20 to share and listen whenever you like';
+  playlistPromptText.classList.add( 'playlist-prompt-text' );
+  playlistPromptText.textContent = 'Create a playlist of your Top 20 to share and listen to whenever you like?';
   playlistPromptDiv.appendChild( playlistPromptText );
+
+  var createPlaylistButtonContainer = document.createElement( 'div' );
+  createPlaylistButtonContainer.classList.add( 'playlist-button-container' );
+
+  var createPlaylistButton = document.createElement( 'div' );
+  createPlaylistButton.classList.add( 'button', 'playlist-button' );
+  createPlaylistButton.addEventListener( 'click', buildNewPlaylist );
+
+  var playlistButtonText = document.createElement( 'p' );
+  playlistButtonText.textContent = 'Create Playlist';
+  createPlaylistButton.appendChild( playlistButtonText );
+
+  createPlaylistButtonContainer.appendChild( createPlaylistButton );
+  playlistPromptDiv.appendChild( createPlaylistButtonContainer );
+
+  var cancelButton = document.createElement( 'p' );
+  cancelButton.classList.add( 'playlist-cancel' );
+  cancelButton.textContent = 'Cancel'
+  cancelButton.addEventListener( 'click', closePlaylistPrompt );
+
+  playlistPromptDiv.appendChild( cancelButton );
 
   generalContainer.appendChild( playlistPromptContainer );
   body.style.overflow = 'hidden';
@@ -853,7 +885,7 @@ var refreshToken = function( type ) {
           var authExpire = new Date();
           authExpire.setTime( authExpire.getTime() + ( 60 * 1000 ) );
           var expires = "expires="+ authExpire.toUTCString();
-          
+
           document.cookie = 'auth_token=' + results.access_token + ';' + expires;
           authToken = results.access_token;
 

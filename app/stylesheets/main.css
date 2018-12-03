@@ -126,22 +126,55 @@ body {
 .playlist-prompt-div {
   margin: 0 auto;
   width: 50%;
+  max-width: 300px;
   height: 70%;
+  max-height: 350px;
   margin-top: 5%;
   z-index: 1001;
   background-color: #ffffff;
   box-shadow: 0 4px 8px 0 rgba( 0, 0, 0, 0.2 ), 0 6px 20px 0 rgba( 0, 0, 0, 0.19 );
-
+  justify-content: center;
 }
 
-#playlist-button-container {
-  display: none;
+.playlist-button {
+  float: none !important;
+  margin: 0 auto !important;
+  height: 100px;
+  width: 100px;
+  margin-bottom: 30px !important;
+}
+
+.playlist-button p {
+  margin-top: 0px;
+  padding-top: 18px;
+  font-size: 24px;
+  color: #ffffff;
+}
+
+.playlist-prompt-text {
+  text-align: center;
+  font-size: 20px;
+  padding: 20px;
+  padding-bottom: 30px;
+  padding-top: 45px;
+  margin-bottom: 0px;
+}
+
+.playlist-button-container {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  align-content: flex-start;
-  margin-bottom: 50px;
+}
+
+.playlist-cancel {
+  font-size: 20px;
+  text-align: center;
+}
+
+.cancel-button:hover {
+  cursor: pointer;
+  opacity: 0.3;
 }
 
 #artist-container {
@@ -528,6 +561,11 @@ body {
 }
 
 @media all and ( max-width: 900px ) {
+  .playlist-prompt-div {
+    width: 90%;
+    max-width: 400px;
+  }
+
   .artist-stat-div {
     width: 90%;
     height: auto;
