@@ -628,6 +628,13 @@ var buildNewPlaylist = function() {
           populatePlaylist( playlist ).then(
             function( results ) {
               debugger
+              // build an input maybe, populate it with newPlaylistLink, lock the input
+              // append playlistInput to var promptContainer = document.getElementById( 'playlist-prompt-container' );
+              // remove create playlist button
+              // alter text to be like Heres a link to your playlist!
+              // maybe look into generating an embed?
+              // example embed
+              // <iframe src="https://open.spotify.com/embed/user/121235432/playlist/1s3PsugzITHvSF5lzSIXa1" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
               // we gotta display a link to share? maybe a pop up?
             }
           );
