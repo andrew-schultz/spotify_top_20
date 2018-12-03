@@ -35,12 +35,19 @@ var loginButton = document.getElementById( 'loginButton' );
 var listButtonContainerTop = document.getElementById( 'list-button-container-top' );
 var listButtonContainerBottom = document.getElementById( 'list-button-container-bottom' );
 
+var playListButton = document.getElementById( 'playlist-button-container' );
+
 var activeList;
 var activeTime = 'medium_term';
 
 var currentPlaying;
 var existingCookie;
 var retryCounter = 0;
+var userId;
+
+var queriedTracks;
+var newPlaylist;
+var newPlaylistLink;
 
 // ================================
 //            functions
@@ -526,8 +533,6 @@ var setTime = function( time ) {
           function( result, index ) {
             var newDiv = buildArtistStatDiv( result, index );
             fadeIn( newDiv );
-            // newDiv.style.display = 'block';
-            // newDiv.style.opacity = 1;
           }
         );
       }
@@ -555,14 +560,101 @@ var queryStats = function( term ) {
             function( result, index ) {
               var newDiv = buildArtistStatDiv( result, index );
               fadeIn( newDiv );
-              // newDiv.style.display = 'block';
-              // newDiv.style.opacity = 1;
             }
           );
         }
       }
     );
   }
+};
+
+var populatePlaylist = function( playlist ) {
+  return new Promise( ( resolve, reject ) => {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( 'POST', `https://api.spotify.com/v1/playlists/${ playlist.id }/tracks`, true );
+    xmlHttp.setRequestHeader( 'Accept', 'application/json' );
+    xmlHttp.setRequestHeader( 'Content-Type', 'application/json' );
+    xmlHttp.setRequestHeader( 'Authorization', `Bearer ${ authToken }` )
+    xmlHttp.onreadystatechange = function() {
+      if ( xmlHttp.readyState == 4 && ( xmlHttp.status == 200 || xmlHttp.status == 201 ) ) {
+        var results = JSON.parse( xmlHttp.response );
+        resolve( results );
+      }
+    };
+
+    var trackUris = queriedTracks.map( track => track.uri );
+
+    var data = {
+      uris: trackUris
+    };
+
+    xmlHttp.send( JSON.stringify( data ) );
+  } );
+};
+
+var createEmptyPlaylist = function() {
+  return new Promise( ( resolve, reject ) => {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( 'POST', `https://api.spotify.com/v1/users/${ userId }/playlists`, true );
+    xmlHttp.setRequestHeader( 'Accept', 'application/json' );
+    xmlHttp.setRequestHeader( 'Content-Type', 'application/json' );
+    xmlHttp.setRequestHeader( 'Authorization', `Bearer ${ authToken }` )
+    xmlHttp.onreadystatechange = function() {
+      if ( xmlHttp.readyState == 4 && ( xmlHttp.status == 200 || xmlHttp.status == 201 ) ) {
+        var results = JSON.parse( xmlHttp.response );
+        resolve( results );
+      }
+    };
+
+    var data = {
+      name: 'My Top 20'
+    };
+
+    xmlHttp.send( JSON.stringify( data ) );
+  } );
+};
+
+var buildNewPlaylist = function() {
+  getUserId().then(
+    function( results ) {
+      userId = results.id;
+
+      // check to see if a playlist exists, i guess use the title?
+      createEmptyPlaylist().then(
+        function( playlist ) {
+          newPlaylist = playlist;
+          newPlaylistLink = playlist.external_urls.spotify;
+
+          populatePlaylist( playlist ).then(
+            function( results ) {
+              debugger
+              // we gotta display a link to share? maybe a pop up?
+            }
+          );
+        }
+      );
+
+    }
+  );
+};
+
+var buildNewPlaylistPrompt = function() {
+  var generalContainer = document.getElementById( 'general-container' );
+  var playlistPromptContainer = document.createElement( 'div' );
+  var body = document.getElementsByTagName( 'body' )[0];
+
+  playlistPromptContainer.classList.add( 'playlist-prompt-container' );
+
+  var playlistPromptDiv = document.createElement( 'div' );
+  playlistPromptDiv.classList.add( 'playlist-prompt-div' );
+  playlistPromptContainer.appendChild( playlistPromptDiv );
+
+  var playlistPromptText = document.createElement( 'p' );
+  playlistPromptText.textContent = 'Create a playlist of your Top 20 to share and listen whenever you like';
+  playlistPromptDiv.appendChild( playlistPromptText );
+
+  generalContainer.appendChild( playlistPromptContainer );
+  body.style.overflow = 'hidden';
 };
 
 // ===========
@@ -727,6 +819,24 @@ var getCurrentState = function() {
   xmlHttp.send( JSON.stringify( data ) );
 };
 
+var getUserId = function() {
+  return new Promise( ( resolve, reject ) => {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( 'GET', 'https://api.spotify.com/v1/me', true );
+    xmlHttp.setRequestHeader( 'Accept', 'application/json' );
+    xmlHttp.setRequestHeader( 'Content-Type', 'application/json' );
+    xmlHttp.setRequestHeader( 'Authorization', `Bearer ${ authToken }` )
+    xmlHttp.onreadystatechange = function() {
+      if ( xmlHttp.readyState == 4 && xmlHttp.status == 200 ) {
+        var results = JSON.parse( xmlHttp.response );
+        resolve( results );
+      }
+    };
+
+    xmlHttp.send();
+  } );
+};
+
 var refreshToken = function( type ) {
   return new Promise( ( resolve, reject ) => {
     retryCounter += 1;
@@ -780,6 +890,10 @@ var getTopList = function( type ) {
     xmlHttp.onreadystatechange = function() {
       if ( xmlHttp.readyState == 4 && xmlHttp.status == 200 ) {
         var results = JSON.parse( xmlHttp.response );
+
+        if ( type == 'tracks' ) {
+          queriedTracks = results.items;
+        }
         resolve( results );
       }
       else if ( xmlHttp.readyState == 4 && xmlHttp.status != 200 ) {
@@ -901,6 +1015,7 @@ var initialRender = function( ready ) {
 
     listButtonContainerTop.style.display = 'flex';
     listButtonContainerBottom.style.display = 'flex';
+    playListButton.style.display = 'flex';
 
     if ( refToken && !authToken ) {
       refreshToken().then(
@@ -921,6 +1036,7 @@ var initialRender = function( ready ) {
 
     listButtonContainerTop.style.display = 'none';
     listButtonContainerBottom.style.display = 'none';
+    playListButton.style.display = 'none';
   }
 };
 

@@ -31,28 +31,36 @@
       </div>
     </div>
 
-    <div class="button-container list-button-container" id="list-button-container-top">
-      <div class="button list-button inactive" id="artist-list-button" onclick="queryStats( 'artists' )">
-        <p>Top Artists</p>
+    <div id="general-container">
+      <div class="button-container list-button-container" id="list-button-container-top">
+        <div class="button list-button inactive" id="artist-list-button" onclick="queryStats( 'artists' )">
+          <p>Top Artists</p>
+        </div>
+        <div class="button list-button" id="track-list-button" onclick="queryStats( 'tracks' )">
+          <p>Top Tracks</p>
+        </div>
       </div>
-      <div class="button list-button" id="track-list-button" onclick="queryStats( 'tracks' )">
-        <p>Top Tracks</p>
-      </div>
-    </div>
 
-    <div class="button-container time-button-container" id="list-button-container-bottom">
-      <div class="button time-button inactive" id="short-time-button" onclick="setTime( 'short_term' )">
-        <p>Recent</p>
+      <div class="button-container time-button-container" id="list-button-container-bottom">
+        <div class="button time-button inactive" id="short-time-button" onclick="setTime( 'short_term' )">
+          <p>Recent</p>
+        </div>
+        <div class="button time-button" id="medium-time-button" onclick="setTime( 'medium_term' )">
+          <p>Mid</p>
+        </div>
+        <div class="button time-button inactive" id="long-time-button" onclick="setTime( 'long_term' )">
+          <p>All Time</p>
+        </div>
       </div>
-      <div class="button time-button" id="medium-time-button" onclick="setTime( 'medium_term' )">
-        <p>Mid</p>
-      </div>
-      <div class="button time-button inactive" id="long-time-button" onclick="setTime( 'long_term' )">
-        <p>Long</p>
-      </div>
-    </div>
 
-    <div id="main-container"></div>
+      <div id="playlist-button-container">
+        <div class="button list-button inactive" id="playlist-button" onclick="buildNewPlaylistPrompt( )">
+          <p>Create Playlist</p>
+        </div>
+      </div>
+
+      <div id="main-container"></div>
+    </div>
 
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script src="javascripts/application.js"></script>

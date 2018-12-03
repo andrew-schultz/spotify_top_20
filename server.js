@@ -297,7 +297,7 @@ app.get( '/authorize', function( request, response ) {
   response.cookie( stateKey, state );
 
   // var scope = ["streaming", "user-read-birthdate", "user-read-email", "user-read-private"];
-  var scopes = "streaming user-top-read user-read-birthdate user-read-email user-read-private playlist-modify-public";
+  var scopes = "streaming user-top-read user-read-birthdate user-read-email user-read-private playlist-modify-public playlist-modify-private";
   // var scope = [ "user-read-currently-playing", "streaming", "user-read-playback-state", "user-read-birthdate", "user-read-email", "user-read-private", "user-modify-playback-state" ];
 
   response.redirect( 'https://accounts.spotify.com/authorize?' +
