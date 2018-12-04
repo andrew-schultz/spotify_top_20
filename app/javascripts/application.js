@@ -614,6 +614,36 @@ var createEmptyPlaylist = function() {
   } );
 };
 
+var buildEmbed = function( link, playlist ) {
+  var promptContainer = document.getElementById( 'playlist-prompt-div' );
+  var playlistButtonContainer = document.getElementById( 'playlist-prompt-button-container' );
+  var playlistText = document.getElementById( 'playlist-prompt-text' );
+  var cancel = document.getElementById( 'playlist-cancel' );
+
+  var iframe = document.createElement( 'iframe' );
+  iframe.classList.add( 'playlist-iframe' );
+  var url = playlist.uri.replace( /spotify:/, '' );
+  formattedUrl = url.replace( /:/g, '/' );
+
+  iframe.src = `https://open.spotify.com/embed/${ formattedUrl }`;
+  iframe.width = '100';
+  iframe.height = '200';
+  iframe.frameborder = '0';
+  iframe.allowtransparency = 'true';
+  iframe.allow = 'encrypted-media';
+
+  iframe.style.transition = 'width: 0.2s', 'height: 0.2s';
+
+  playlistText.textContent = "Here's your Top 20 playlist!";
+  cancel.textContent = 'Close';
+  promptContainer.classList.add( 'expanded-prompt-container' );
+  cancel.classList.add( 'cancel-padding' );
+  promptContainer.removeChild( playlistButtonContainer );
+  // add a spinner, set a timeout before inserting
+
+  promptContainer.insertBefore( iframe, cancel );  
+};
+
 var buildNewPlaylist = function() {
   getUserId().then(
     function( results ) {
@@ -627,15 +657,7 @@ var buildNewPlaylist = function() {
 
           populatePlaylist( playlist ).then(
             function( results ) {
-              debugger
-              // build an input maybe, populate it with newPlaylistLink, lock the input
-              // append playlistInput to var promptContainer = document.getElementById( 'playlist-prompt-container' );
-              // remove create playlist button
-              // alter text to be like Heres a link to your playlist!
-              // maybe look into generating an embed?
-              // example embed
-              // <iframe src="https://open.spotify.com/embed/user/121235432/playlist/1s3PsugzITHvSF5lzSIXa1" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-              // we gotta display a link to share? maybe a pop up?
+              buildEmbed( newPlaylistLink, newPlaylist );
             }
           );
         }
@@ -663,15 +685,18 @@ var buildNewPlaylistPrompt = function() {
   playlistPromptContainer.id = 'playlist-prompt-container';
 
   var playlistPromptDiv = document.createElement( 'div' );
+  playlistPromptDiv.id = 'playlist-prompt-div';
   playlistPromptDiv.classList.add( 'playlist-prompt-div' );
   playlistPromptContainer.appendChild( playlistPromptDiv );
 
   var playlistPromptText = document.createElement( 'p' );
+  playlistPromptText.id = 'playlist-prompt-text';
   playlistPromptText.classList.add( 'playlist-prompt-text' );
   playlistPromptText.textContent = 'Create a playlist of your Top 20 to share and listen to whenever you like?';
   playlistPromptDiv.appendChild( playlistPromptText );
 
   var createPlaylistButtonContainer = document.createElement( 'div' );
+  createPlaylistButtonContainer.id = 'playlist-prompt-button-container';
   createPlaylistButtonContainer.classList.add( 'playlist-button-container' );
 
   var createPlaylistButton = document.createElement( 'div' );
@@ -686,6 +711,7 @@ var buildNewPlaylistPrompt = function() {
   playlistPromptDiv.appendChild( createPlaylistButtonContainer );
 
   var cancelButton = document.createElement( 'p' );
+  cancelButton.id = 'playlist-cancel';
   cancelButton.classList.add( 'playlist-cancel' );
   cancelButton.textContent = 'Cancel'
   cancelButton.addEventListener( 'click', closePlaylistPrompt );
