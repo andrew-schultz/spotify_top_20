@@ -556,6 +556,13 @@ var queryStats = function( term ) {
           activeList = term;
           toggleListButtons( term );
 
+          if ( term === 'tracks' ) {
+            displayPlaylistPromptButton( true );
+          }
+          else if ( term === 'artists' ) {
+            displayPlaylistPromptButton();
+          }
+
           results.items.forEach(
             function( result, index ) {
               var newDiv = buildArtistStatDiv( result, index );
@@ -592,6 +599,22 @@ var populatePlaylist = function( playlist ) {
   } );
 };
 
+var playlistPeriod = function() {
+  var period;
+
+  if ( activeTime === 'short_term' ) {
+    period = 'month';
+  }
+  else if ( activeTime === 'medium_term' ) {
+    period = '6 months';
+  }
+  else if ( activeTime === 'long_term' ) {
+    period = 'few years'
+  }
+
+  return period;
+};
+
 var createEmptyPlaylist = function() {
   return new Promise( ( resolve, reject ) => {
     var xmlHttp = new XMLHttpRequest();
@@ -606,8 +629,14 @@ var createEmptyPlaylist = function() {
       }
     };
 
+    var period = playlistPeriod();
+    var description = `Most listened to tracks over the past ${ period }`;
+    var date = new Date();
+    var dateString = `${ date.getMonth() }/${ date.getDate() }/${ date.getFullYear() }`;
+
     var data = {
-      name: 'My Top 20'
+      name: `My Top 20 - ${ dateString }`,
+      description: `${ description }`
     };
 
     xmlHttp.send( JSON.stringify( data ) );
@@ -641,7 +670,7 @@ var buildEmbed = function( link, playlist ) {
   promptContainer.removeChild( playlistButtonContainer );
   // add a spinner, set a timeout before inserting
 
-  promptContainer.insertBefore( iframe, cancel );  
+  promptContainer.insertBefore( iframe, cancel );
 };
 
 var buildNewPlaylist = function() {
@@ -720,6 +749,16 @@ var buildNewPlaylistPrompt = function() {
 
   generalContainer.appendChild( playlistPromptContainer );
   body.style.overflow = 'hidden';
+};
+
+var displayPlaylistPromptButton = function( show ) {
+  var buttonContainer = document.getElementById( 'playlist-button' );
+  if ( show && buttonContainer ) {
+    buttonContainer.style.display = 'block';
+  }
+  else {
+    buttonContainer.style.display = 'none';
+  }
 };
 
 // ===========
