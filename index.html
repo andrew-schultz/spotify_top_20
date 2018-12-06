@@ -60,6 +60,22 @@
       </div>
 
       <div id="main-container"></div>
+
+      <div id='playlist-prompt-container' class="playlist-prompt-container">
+        <div id="playlist-prompt-div" class="playlist-prompt-div">
+          <p id="playlist-prompt-text" class="playlist-prompt-text">
+          </p>
+
+          <div id="playlist-prompt-button-container" class="playlist-button-container display">
+            <div class="button playlist-button" onclick="buildNewPlaylist()">
+              <p>Create Playlist</p>
+            </div>
+          </div>
+        
+          <p id="playlist-cancel" class="playlist-cancel" onclick="closePlaylistPrompt()">
+          </p>
+        </div>
+      </div>
     </div>
 
     <script src="https://sdk.scdn.co/spotify-player.js"></script>

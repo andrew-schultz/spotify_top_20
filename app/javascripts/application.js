@@ -662,12 +662,13 @@ var buildEmbed = function( link, playlist ) {
   iframe.allow = 'encrypted-media';
 
   iframe.style.transition = 'width: 0.2s', 'height: 0.2s';
+  iframe.id = 'playlist-iframe';
 
   playlistText.textContent = "Here's your Top 20 playlist!";
   cancel.textContent = 'Close';
   promptContainer.classList.add( 'expanded-prompt-container' );
   cancel.classList.add( 'cancel-padding' );
-  promptContainer.removeChild( playlistButtonContainer );
+  playlistButtonContainer.classList.remove( 'display' );
   // add a spinner, set a timeout before inserting
 
   promptContainer.insertBefore( iframe, cancel );
@@ -698,56 +699,34 @@ var buildNewPlaylist = function() {
 
 var closePlaylistPrompt = function () {
   var body = document.getElementsByTagName( 'body' )[0];
-  var generalContainer = document.getElementById( 'general-container' );
   var promptContainer = document.getElementById( 'playlist-prompt-container' );
+  var promptDiv = document.getElementById( 'playlist-prompt-div' );
+  
+  var iframe = document.getElementById( 'playlist-iframe' );
 
-  generalContainer.removeChild( promptContainer );
+  if ( iframe ) {
+    promptDiv.removeChild( iframe );
+    promptDiv.classList.remove( 'expanded-prompt-container' );
+  }
+  
+  promptContainer.classList.remove( 'display' );
   body.style.overflow = 'auto';
 };
 
 var buildNewPlaylistPrompt = function() {
-  var generalContainer = document.getElementById( 'general-container' );
-  var playlistPromptContainer = document.createElement( 'div' );
   var body = document.getElementsByTagName( 'body' )[0];
-
-  playlistPromptContainer.classList.add( 'playlist-prompt-container' );
-  playlistPromptContainer.id = 'playlist-prompt-container';
-
-  var playlistPromptDiv = document.createElement( 'div' );
-  playlistPromptDiv.id = 'playlist-prompt-div';
-  playlistPromptDiv.classList.add( 'playlist-prompt-div' );
-  playlistPromptContainer.appendChild( playlistPromptDiv );
-
-  var playlistPromptText = document.createElement( 'p' );
-  playlistPromptText.id = 'playlist-prompt-text';
-  playlistPromptText.classList.add( 'playlist-prompt-text' );
+  var playlistPromptContainer = document.getElementById( 'playlist-prompt-container' );
+  
+  var playlistPromptText = document.getElementById( 'playlist-prompt-text' );
   playlistPromptText.textContent = 'Create a playlist of your Top 20 to share and listen to whenever you like?';
-  playlistPromptDiv.appendChild( playlistPromptText );
 
-  var createPlaylistButtonContainer = document.createElement( 'div' );
-  createPlaylistButtonContainer.id = 'playlist-prompt-button-container';
-  createPlaylistButtonContainer.classList.add( 'playlist-button-container' );
+  var playlistPromptButtonContainer = document.getElementById( 'playlist-prompt-button-container' );
 
-  var createPlaylistButton = document.createElement( 'div' );
-  createPlaylistButton.classList.add( 'button', 'playlist-button' );
-  createPlaylistButton.addEventListener( 'click', buildNewPlaylist );
-
-  var playlistButtonText = document.createElement( 'p' );
-  playlistButtonText.textContent = 'Create Playlist';
-  createPlaylistButton.appendChild( playlistButtonText );
-
-  createPlaylistButtonContainer.appendChild( createPlaylistButton );
-  playlistPromptDiv.appendChild( createPlaylistButtonContainer );
-
-  var cancelButton = document.createElement( 'p' );
-  cancelButton.id = 'playlist-cancel';
-  cancelButton.classList.add( 'playlist-cancel' );
+  var cancelButton = document.getElementById( 'playlist-cancel' );
   cancelButton.textContent = 'Cancel'
-  cancelButton.addEventListener( 'click', closePlaylistPrompt );
 
-  playlistPromptDiv.appendChild( cancelButton );
-
-  generalContainer.appendChild( playlistPromptContainer );
+  playlistPromptButtonContainer.classList.add( 'display' );
+  playlistPromptContainer.classList.add( 'display' );
   body.style.overflow = 'hidden';
 };
 
